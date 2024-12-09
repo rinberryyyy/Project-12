@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Погода в городах</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+   <div class="hero">
+       <div class="hero-content">
+           <h1>What about the weather?</h1>
+           <form method="POST">
+               <div class="form-group">
+                   <input type="text" name="start_city" placeholder="From" value="{{ start_city or '' }}">
+               </div>
+               <div class="form-group">
+                   <input type="text" name="end_city" placeholder="To" value="{{ end_city or '' }}">
+               </div>
+               <div class="form-group">
+                   <button type="submit">Go</button>
+               </div>
+           </form>
+
+           {% if result %}
+               <div class="result">
+                   {% if result.start_weather_info %}
+                       <h2>Погода в {{ result.start_weather_info.city }}:</h2>
+                       <p>Температура: {{ result.start_weather_info.current_temperature }}°C</p>
+                       <p>{{ result.start_weather_info.weather_text }}</p>
+                       <p>Скорость ветра: {{ result.start_weather_info.wind_speed }} м/с</p>
+                       <p>Влажность: {{ result.start_weather_info.humidity }}%</p>
+                       <p>Давление: {{ result.start_weather_info.pressure }} мм рт. ст.</p>
+                       <p>Мин. температура: {{ result.start_weather_info.min_temp }}°C, Макс. температура: {{ result.start_weather_info.max_temp }}°C</p>
+                       <p>Вероятность осадков: {{ result.start_weather_info.precipitation_probability }}%</p>
+                       <p>{{ result.start_bad_weather }}</p>
+                   {% else %}
+                       <p>Не удалось получить данные о погоде для города {{ result.start_weather_info.city }}</p>
+                   {% endif %}
+
+                   {% if result.end_weather_info %}
+                       <h2>Погода в {{ result.end_weather_info.city }}:</h2>
+                       <p>Температура: {{ result.end_weather_info.current_temperature }}°C</p>
+                       <p>{{ result.end_weather_info.weather_text }}</p>
+                       <p>Скорость ветра: {{ result.end_weather_info.wind_speed }} м/с</p>
+                       <p>Влажность: {{ result.end_weather_info.humidity }}%</p>
+                       <p>Давление: {{ result.end_weather_info.pressure }} мм рт. ст.</p>
+                       <p>Мин. температура: {{ result.end_weather_info.min_temp }}°C, Макс. температура: {{ result.end_weather_info.max_temp }}°C</p>
+                       <p>Вероятность осадков: {{ result.end_weather_info.precipitation_probability }}%</p>
+                       <p>{{ result.end_bad_weather }}</p>
+                   {% else %}
+                       <p>Не удалось получить данные о погоде для города {{ result.end_weather_info.city }}</p>
+                   {% endif %}
+               </div>
+           {% endif %}
+       </div>
+   </div>
+</body>
+</html>
